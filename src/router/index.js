@@ -9,6 +9,11 @@ const router = createRouter({
       name: 'board',
       component: () => import('../views/board/Board.vue'),
     },
+    {
+      path: '/boardlist',
+      name: 'boardlist',
+      component: () => import('../views/board/BoardList.vue'),
+    },
   ],
 })
 
