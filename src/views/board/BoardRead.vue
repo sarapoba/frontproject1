@@ -32,6 +32,23 @@ const goToModify = () => {
   const idx = route.params.idx
   router.push(`/boardmodify/${idx}`)
 }
+
+const deletePost = async () => {
+  // 사용자가 실수로 누를 수 있으니 반드시 확인창(confirm)을 띄워줍니다.
+  if (confirm('정말 이 게시글을 삭제하시겠습니까? 삭제 후에는 복구할 수 없습니다.')) {
+    try {
+      // 백엔드로 DELETE 요청을 보냅니다.
+      await axios.delete(`http://localhost:8080/board/delete/${route.params.idx}`)
+      alert('게시글이 삭제되었습니다.')
+
+      // 삭제가 완료되면 더 이상 상세 페이지에 머물 이유가 없으므로 목록으로 돌려보냅니다.
+      router.push('/boardlist')
+    } catch (error) {
+      console.error('삭제 실패:', error)
+      alert('게시글 삭제 중 오류가 발생했습니다.')
+    }
+  }
+}
 </script>
 
 <template>
@@ -49,6 +66,7 @@ const goToModify = () => {
       <div class="button-group">
         <button @click="goToList" class="btn-list">목록으로</button>
         <button @click="goToModify" class="btn-modify">수정하기</button>
+        <button @click="deletePost" class="btn-delete">삭제하기</button>
       </div>
     </div>
 
@@ -126,5 +144,17 @@ const goToModify = () => {
   text-align: center;
   margin-top: 50px;
   color: #666;
+}
+
+.btn-delete {
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-delete:hover {
+  background-color: #c82333;
 }
 </style>
