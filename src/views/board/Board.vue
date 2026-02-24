@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import api from '@/api/axiosinterceptor' // 아까 만든 Axios 인터셉터 설정 파일
+import api from '@/api/axiosinterceptor'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -19,11 +19,9 @@ const submitPost = async () => {
   }
 
   try {
-    // 백엔드 BoardController의 @PostMapping("/register")로 데이터 전송
     const response = await api.post('/board/register', board.value)
-
-    alert(response) // "게시글이 성공적으로 등록" 알림
-    router.push('/board/list') // 등록 후 리스트 페이지로 이동 (선택 사항)
+    alert('게시글이 성공적으로 등록되었습니다.')
+    router.push('/boardlist')
   } catch (error) {
     console.error('등록 실패:', error)
     alert('서버와 통신 중 에러가 발생했습니다.')
@@ -36,6 +34,11 @@ const resetForm = () => {
     board.value.title = ''
     board.value.contents = ''
   }
+}
+
+// 💎 4. 목록으로 돌아가는 함수 추가
+const goToList = () => {
+  router.push('/boardlist')
 }
 </script>
 
@@ -57,6 +60,7 @@ const resetForm = () => {
     </div>
 
     <div class="button-group">
+      <button @click="goToList" class="btn-list">목록으로</button>
       <button @click="submitPost" class="btn-submit">등록하기</button>
       <button @click="resetForm" class="btn-reset">취소</button>
     </div>
@@ -91,10 +95,25 @@ label {
   height: 200px;
   resize: none;
 }
+/* 버튼 그룹 정렬 유지 */
 .button-group {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
+}
+/* 💎 목록 이동 버튼 스타일 추가 (차분한 회색) */
+.btn-list {
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  /* 목록 버튼은 다른 버튼들과 살짝 거리를 두기 위해 우측 마진을 줍니다 */
+  margin-right: auto;
+}
+.btn-list:hover {
+  background-color: #5a6268;
 }
 .btn-submit {
   padding: 10px 20px;
