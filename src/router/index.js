@@ -19,6 +19,11 @@ const router = createRouter({
       name: 'boardread',
       component: () => import('../views/board/BoardRead.vue'),
     },
+    {
+      path: '/boardmodify/:idx',
+      name: 'boardmodify',
+      component: () => import('../views/board/BoardModify.vue'),
+    },
   ],
 })
 
